@@ -23,16 +23,19 @@
     "multer-storage-cloudinary": "^4.0.0",
     "mysql2": "^3.0.1",
     "nodemon": "^2.0.20",
-    "sequelize": "^6.28.0",
-    "uuid": "^9.0.0",
     "pg": "8.7.1",
     "pg-hstore": "2.3.4",
-    "@babel/register": "^7.20.7"
+    "sequelize": "^6.28.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.12",
+    "@babel/core": "^7.26.0",
     "@babel/node": "^7.20.7",
-    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/register": "^7.25.9",
     "sequelize-cli": "^6.5.2"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }
