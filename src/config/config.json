@@ -12,7 +12,8 @@
       "ssl": {
         "require": true,
         "rejectUnauthorized": false
-      }
+      },
+      "connectTimeout": 10000
     }
   },
   "test": {
@@ -25,7 +26,8 @@
       "ssl": {
         "require": true,
         "rejectUnauthorized": false
-      }
+      },
+      "connectTimeout": 10000
     }
   },
   "production": {
@@ -38,7 +40,8 @@
       "ssl": {
         "require": true,
         "rejectUnauthorized": false
-      }
+      },
+      "connectTimeout": 10000
     }
   }
 }
