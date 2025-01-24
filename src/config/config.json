@@ -20,13 +20,25 @@
     "password": "buy-book-123456789A@",
     "database": "postgres",
     "host": "db.vxxpartjlyfrpyzplvce.supabase.co",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   },
   "production": {
     "username": "postgres",
     "password": "buy-book-123456789A@",
     "database": "postgres",
     "host": "db.vxxpartjlyfrpyzplvce.supabase.co",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
   }
 }
