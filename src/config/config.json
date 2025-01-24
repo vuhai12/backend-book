@@ -1,0 +1,32 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "buy-book-123456789A@",
+    "database": "postgres",
+    "host": "db.vxxpartjlyfrpyzplvce.supabase.co",
+    "dialect": "postgres",
+    "port": 5432,
+    "logging": false,
+    "timezone": "+07:00",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  },
+  "test": {
+    "username": "postgres",
+    "password": "buy-book-123456789A@",
+    "database": "postgres",
+    "host": "db.vxxpartjlyfrpyzplvce.supabase.co",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "buy-book-123456789A@",
+    "database": "postgres",
+    "host": "db.vxxpartjlyfrpyzplvce.supabase.co",
+    "dialect": "postgres"
+  }
+}
