@@ -8,12 +8,12 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
   dialect: 'postgres', // Đổi từ 'mysql' thành 'postgres'
   port: process.env.DB_PORT || 5432, // Cổng mặc định của PostgreSQL là 5432
   logging: false, // Ẩn log
-  // dialectOptions: {
-  //   ssl: {
-  //     require: true,
-  //     rejectUnauthorized: false,
-  //   },
-  // },
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
 });
 
 /* 
