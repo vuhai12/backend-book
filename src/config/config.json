@@ -1,11 +1,11 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "123456789",
+    "username": "postgres.vxxpartjlyfrpyzplvce",
+    "password": "buy-book-123456789A@",
     "database": "postgres",
-    "host": "localhost",
+    "host": "aws-0-ap-southeast-1.pooler.supabase.com",
     "dialect": "postgres",
-    "port": 5432,
+    "port": 6543,
     "logging": false,
     "timezone": "+07:00"
   },
