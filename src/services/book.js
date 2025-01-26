@@ -11,10 +11,6 @@ export const getBooks = ({ page, limit, order, name, available, ...query }) =>
     //limit: mỗi lần lấy bao nhiêu
     //page, limit, order không phải để filter mà là để phân trang, nên dùng queries
     //name hay các biến khác (nếu có) cần filter nên dùng query
-    console.log('query', query);
-    console.log('page', page);
-    console.log('limit', limit);
-    console.log('available', available);
 
     try {
       //tạo 1 object là queries để thiết lập việc truy vấn cho sequelize
@@ -46,7 +42,6 @@ export const getBooks = ({ page, limit, order, name, available, ...query }) =>
         //   },
         // ],
       });
-      console.log('response', response);
       resolve({
         error: response ? 0 : 1,
         message: response ? 'Got' : 'Cannot found',

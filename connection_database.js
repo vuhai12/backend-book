@@ -8,12 +8,12 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USERNAME, pr
   dialect: 'postgres', // Đổi từ 'mysql' thành 'postgres'
   port: process.env.DB_PORT || 5432, // Cổng mặc định của PostgreSQL là 5432
   logging: false, // Ẩn log
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
-  },
+  // dialectOptions: {
+  //   ssl: {
+  //     require: true,
+  //     rejectUnauthorized: false,
+  //   },
+  // },
 });
 
 /* 
@@ -29,7 +29,6 @@ const connectionDatabase = async () => {
   try {
     await sequelize.authenticate(); // Kiểm tra kết nối
     const res = await db.User.findAll(); // Truy vấn dữ liệu từ bảng User
-    console.log('res', res);
     console.log('Connection has been established successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);

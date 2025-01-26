@@ -8,9 +8,7 @@ export const isAdmin = (req, res, next) => {
 
 export const isUser = (req, res, next) => {
   const { role_code } = req.user;
-  console.log('role_code', role_code);
   if (role_code !== 'R2') return notAuthorized('Require role User', res);
-  console.log('next');
   next();
 };
 

@@ -6,7 +6,6 @@ import Joi from 'joi';
 //READ
 export const getBooks = async (req, res) => {
   try {
-    console.log('req.query', req.query);
     const response = await services.getBooks(req.query);
     return res.status(200).json(response);
   } catch (error) {

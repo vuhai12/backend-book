@@ -1,47 +1,26 @@
 {
   "development": {
-    "username": "postgres.vxxpartjlyfrpyzplvce",
-    "password": "buy-book-123456789A@",
+    "username": "postgres",
+    "password": "123456789",
     "database": "postgres",
-    "host": "aws-0-ap-southeast-1.pooler.supabase.com",
+    "host": "localhost",
     "dialect": "postgres",
-    "port": 6543,
+    "port": 5432,
     "logging": false,
-    "timezone": "+07:00",
-    "dialectOptions": {
-      "ssl": {
-        "require": true,
-        "rejectUnauthorized": false
-      },
-      "connectTimeout": 10000
-    }
+    "timezone": "+07:00"
   },
   "test": {
     "username": "postgres.vxxpartjlyfrpyzplvce",
     "password": "buy-book-123456789A@",
     "database": "postgres",
-    "host": "aws-0-ap-southeast-1.pooler.supabase.com",
-    "dialect": "postgres",
-    "dialectOptions": {
-      "ssl": {
-        "require": true,
-        "rejectUnauthorized": false
-      },
-      "connectTimeout": 10000
-    }
+    "host": "localhost",
+    "dialect": "postgres"
   },
   "production": {
-    "username": "postgres.vxxpartjlyfrpyzplvce",
-    "password": "buy-book-123456789A@",
+    "username": "postgres",
+    "password": "123456789",
     "database": "postgres",
-    "host": "aws-0-ap-southeast-1.pooler.supabase.com",
-    "dialect": "postgres",
-    "dialectOptions": {
-      "ssl": {
-        "require": true,
-        "rejectUnauthorized": false
-      },
-      "connectTimeout": 10000
-    }
+    "host": "localhost",
+    "dialect": "postgres"
   }
 }
