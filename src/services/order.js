@@ -13,15 +13,19 @@ export const createOrder = (body, id) =>
       });
 
       if (count > 0) {
+        console.log('body', body);
+        console.log('totalPriceCheckedInCart', typeof body.totalPriceCheckedInCart);
         const response = await db.Order.create({
           id: generateId(),
-          totalPrices: body.totalPriceCheckedInCart,
+          totalPrices: parseFloat(body.totalPriceCheckedInCart),
           paymentMethod: body.methodPayment,
           status: 'Active',
           isDelivered: false,
           isPaid: false,
           orderUserId: id,
         });
+
+        console.log('response', response);
 
         if (response && response.id) {
           const data = body.listBookInCartChecked.map((item) => {

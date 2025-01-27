@@ -8,7 +8,7 @@ const hashPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 };
 
-export const register = ({ email, password }) =>
+export const register = ({ email, password, name }) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await db.User.findOrCreate({
@@ -16,6 +16,7 @@ export const register = ({ email, password }) =>
         defaults: {
           id: generateId(),
           email,
+          name,
           password: hashPassword(password),
         },
         include: [{ model: db.Role, as: 'roleData', attributes: ['id', 'code', 'value'] }],
@@ -64,7 +65,7 @@ export const login = ({ email, password }) =>
               role_code: response?.role_code,
             },
             process.env.JWT_SECRET,
-            { expiresIn: '800s' }
+            { expiresIn: '500s' }
           )
         : null;
       //JWT_SECRET_REFRESH_TOKEN
@@ -75,7 +76,7 @@ export const login = ({ email, password }) =>
               id: response.id,
             },
             process.env.JWT_SECRET_REFRESH_TOKEN,
-            { expiresIn: '1h' }
+            { expiresIn: '2d' }
           )
         : null;
 
@@ -150,7 +151,7 @@ export const refreshToken = (refresh_token) =>
               process.env.JWT_SECRET,
               // { expiresIn: "2d" }
               // { expiresIn: "30s" }
-              { expiresIn: '1h' }
+              { expiresIn: '500s' }
             );
             resolve({
               error: accessToken ? 0 : 1,

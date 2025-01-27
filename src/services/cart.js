@@ -83,6 +83,7 @@ export const getCartById = (id) =>
         cartData: response,
       });
     } catch (error) {
+      console.log('error services');
       reject(error);
     }
   });

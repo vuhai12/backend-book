@@ -8,39 +8,39 @@ module.exports = {
         allowNull: false,
         // autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       orderUserId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       totalPrices: {
-        type: Sequelize.INTEGER
+        type: Sequelize.FLOAT,
       },
       paymentMethod: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       status: {
-        type: Sequelize.STRING
-      }, 
+        type: Sequelize.STRING,
+      },
       isDelivered: {
-        type: Sequelize.BOOLEAN
-      }, 
+        type: Sequelize.BOOLEAN,
+      },
       isPaid: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
         type: 'TIMESTAMP',
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         allowNull: false,
         type: 'TIMESTAMP',
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
-      }
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Orders');
-  }
+  },
 };
