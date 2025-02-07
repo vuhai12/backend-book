@@ -2,17 +2,14 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Cài đặt dependencies
 COPY package*.json . 
 RUN npm install
+RUN npm install -g nodemon  # Thêm nodemon để tự động reload
 
-# Copy mã nguồn
 COPY . .
 
-# Đọc biến môi trường từ file .env
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 
 EXPOSE 5000
 
-# Chạy ứng dụng
-CMD ["npm", "start"]
+CMD ["nodemon", "index.js"]  # Sử dụng nodemon để chạy server

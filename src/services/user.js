@@ -65,7 +65,7 @@ export const createNewUser = (body, fileData) =>
           ...body,
           id: generateId(),
           password: hashPassword(body?.password),
-          avatar: `http://localhost:${process.env.PORT}/${fileData?.filename}`,
+          avatar: `${process.env.BASE_URL}/uploads/${fileData?.filename}`,
         },
       });
 
@@ -81,7 +81,7 @@ export const createNewUser = (body, fileData) =>
 export const updateUser = (body, fileData, id) =>
   new Promise(async (resolve, reject) => {
     try {
-      if (fileData) body.avatar = `http://localhost:${process.env.PORT}/${fileData?.filename}`;
+      if (fileData) body.avatar = `${process.env.BASE_URL}/uploads/${fileData?.filename}`;
       if (body.password) body.password = hashPassword(body?.password);
       const response = await db.User.update(body, {
         where: { id },
