@@ -42,7 +42,6 @@ export const updateUser = async (req, res) => {
   try {
     const fileData = req.file;
     const { id } = req.user;
-    console.log('fileData', fileData);
     // const { error } = Joi.object({ bid }).validate({ bid: req.body.bid })
 
     // if (error) {

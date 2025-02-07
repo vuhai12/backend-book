@@ -20,12 +20,9 @@ export const addCart = async (req, res) => {
 export const getCartById = async (req, res) => {
   try {
     const { id } = req.user;
-    console.log('getCartById');
     const response = await services.getCartById(id);
-    console.log('response', response);
     return res.status(200).json(response);
   } catch (error) {
-    console.log('getCartById error');
     return internalServerError(res);
   }
 };
