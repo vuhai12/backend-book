@@ -1,19 +1,17 @@
-# Sử dụng node làm base image
-FROM node:18
+# Sử dụng Node.js phiên bản 20
+FROM node:20
 
-# Đặt thư mục làm việc
+# Thiết lập thư mục làm việc trong container
 WORKDIR /app
 
-# Copy file package.json và package-lock.json để cài đặt dependency trước
+# Copy package.json để cài đặt dependencies
 COPY package.json package-lock.json ./
-
-# Cài đặt dependency
 RUN npm install
 
 # Copy toàn bộ mã nguồn vào container
 COPY . .
 
-# Thiết lập biến môi trường
+# Load biến môi trường
 ARG JWT_SECRET
 ARG JWT_SECRET_REFRESH_TOKEN
 ARG CLIENT_URL
@@ -43,8 +41,9 @@ ENV LIMIT_BOOK=${LIMIT_BOOK}
 ENV LIMIT_USER=${LIMIT_USER}
 ENV NODE_ENV=${NODE_ENV}
 
-# Mở cổng
+
+# Mở port 5000
 EXPOSE 5000
 
 # Chạy ứng dụng
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
