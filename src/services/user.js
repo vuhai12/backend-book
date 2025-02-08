@@ -81,8 +81,17 @@ export const createNewUser = (body, fileData) =>
 export const updateUser = (body, fileData, id) =>
   new Promise(async (resolve, reject) => {
     try {
-      if (fileData) body.avatar = `${process.env.BASE_URL}/uploads/${fileData?.filename}`;
-      if (body.password) body.password = hashPassword(body?.password);
+      if (fileData) {
+        body.avatar = `${process.env.BASE_URL}/uploads/${fileData?.filename}`;
+      } else {
+        delete body.avatar;
+      }
+      if (body.password) {
+        body.password = hashPassword(body?.password);
+      } else {
+        delete body.password;
+      }
+
       const response = await db.User.update(body, {
         where: { id },
       });

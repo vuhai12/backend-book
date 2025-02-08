@@ -48,6 +48,7 @@ export const updateUser = async (req, res) => {
     //     // if (fileData) cloudinary.uploader.destroy(fileData.filename)
     //     return badRequest(error.details[0].message, res)
     // }
+    console.log('fileData', fileData);
     const response = await services.updateUser(req.body, fileData, id);
     // const response = await services.updateUser(req.body)
 
