@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "postgres.vxxpartjlyfrpyzplvce",
+    "username": "postgres.wtdncfbzojhuhmapccpy",
     "password": "buy-book-123456789A@",
     "database": "postgres",
     "host": "aws-0-ap-southeast-1.pooler.supabase.com",
@@ -10,14 +10,14 @@
     "timezone": "+07:00"
   },
   "test": {
-    "username": "postgres.vxxpartjlyfrpyzplvce",
+    "username": "postgres.wtdncfbzojhuhmapccpy",
     "password": "buy-book-123456789A@",
     "database": "postgres",
     "host": "aws-0-ap-southeast-1.pooler.supabase.com",
     "dialect": "postgres"
   },
   "production": {
-    "username": "postgres.vxxpartjlyfrpyzplvce",
+    "username": "postgres.wtdncfbzojhuhmapccpy",
     "password": "buy-book-123456789A@",
     "database": "postgres",
     "host": "aws-0-ap-southeast-1.pooler.supabase.com",
