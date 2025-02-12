@@ -43,19 +43,7 @@ export const login = ({ email, password }) =>
         include: [{ model: db.Role, attributes: ['id', 'code', 'value'], as: 'roleData' }],
       });
 
-      //với raw: true thì sẽ không lấy dữ liệu trả về là 1 instance của sequelize và ngược lại
-
-      //kiểm tra xem kết quả client gửi lên có khớp với data trong db hay không
-      //nếu response là null, isChecked = null, nếu không thì thực hiện so sánh password
       const isChecked = response && bcrypt.compareSync(password, response.password);
-      //mã hóa id, email và role_code ra thành token, để phục vụ cho việc phân quyền
-      const responeseProfile = isChecked
-        ? await db.ProfileUser.create({
-            id: generateId(),
-            address: 'Viet Nam, Ha Noi',
-            profileUserId: response.id,
-          })
-        : null;
 
       const accessToken = isChecked
         ? jwt.sign(
@@ -84,14 +72,8 @@ export const login = ({ email, password }) =>
         //kiểm tra dựa trên token
         error: accessToken ? 0 : 1,
         message: accessToken ? 'Login successfully' : response ? 'Password is wrong' : 'Email is not signed up',
-        //Nếu không có token thì chuyển sang check response, nếu có response thì có nghĩa là password đã sai, ngược lại thì email sai.
         access_token: accessToken ? `Bearer ${accessToken}` : accessToken,
-        //Bearer Token.
-        //Thường được gọi là Token authentication.
-        //Đây là một hình thức xác thực HTTP liên quan đến token có tên là Bearer token.
-        //Như tên mô tả Bearer Token cấp quyền truy cập cho người dùng khi có token hợp lệ.
         refresh_token: refreshToken,
-        // role_code: response?.roleData.code
         role_code: response?.role_code,
       });
       if (refreshToken) {

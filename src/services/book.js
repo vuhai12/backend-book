@@ -8,15 +8,8 @@ require('dotenv').config();
 //READ
 export const getBooks = ({ page, limit, order, name, available, ...query }) =>
   new Promise(async (resolve, reject) => {
-    //limit: mỗi lần lấy bao nhiêu
-    //page, limit, order không phải để filter mà là để phân trang, nên dùng queries
-    //name hay các biến khác (nếu có) cần filter nên dùng query
-
     try {
-      //tạo 1 object là queries để thiết lập việc truy vấn cho sequelize
-      //xuyên suốt quá trình thì object sẽ được thêm thắt các cặp key/value để phục vụ việc truy vấn được chính xác như yêu cầu
       const queries = { raw: true, nest: true };
-      //offset: vị trí mà mình muốn lấy, ví dụ offset = 10 thì sẽ lấy từ 10 trở đi và bỏ qua 9 cái trước
       const offset = !page || +page <= 1 ? 0 : +page - 1;
       const fLimit = +limit || +process.env.LIMIT_BOOK; //nếu truyền vào limit thì lấy, còn nếu không thì lấy limit trong file .env
       queries.offset = offset * fLimit;
@@ -28,22 +21,20 @@ export const getBooks = ({ page, limit, order, name, available, ...query }) =>
         where: query,
         ...queries, //sử dụng destructuring rải các thuộc tính của queries ra
         attributes: {
-          // exclude: ['category_code', 'description'],
           exclude: ['category_code'],
         },
-        //Nếu đứng từ bảng book mà chỉ cần chọc tới 1 bảng nữa thôi thì ko cần truyền mảng, truyền object là được
-        //Còn nếu muốn lấy từ 2 bảng trở lên thì phải để vào một cái mảng, trong mảng sẽ chứa các object tương ứng với từng bảng muốn lấy.
-        //có thể viết bọc trong mảng như bên dưới
-        // include: [
-        //   {
-        //     model: db.Category,
-        //     attributes: { exclude: ['createdAt', 'updatedAt'] },
-        //     as: 'categoryData',
-        //   },
-        // ],
+        order: [['createdAt', 'DESC']],
+
+        include: [
+          {
+            model: db.Category,
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            as: 'categoryData',
+          },
+        ],
       });
       resolve({
-        error: response ? 0 : 1,
+        error: response ? 0 : 2,
         message: response ? 'Got' : 'Cannot found',
         bookData: response,
       });
@@ -64,7 +55,7 @@ export const getBookById = (bookID) =>
       });
 
       resolve({
-        error: response ? 0 : 1,
+        error: response ? 0 : 2,
         message: response ? 'Got' : 'Book not found',
         bookData: response,
       });
@@ -78,19 +69,25 @@ export const createNewBook = (body, fileData) =>
     try {
       const response = await db.Book.findOrCreate({
         where: { title: body?.title },
-        //default (số ít): tạo 1 cột theo key/value đầu tiên trong object
-        //defaults (số nhiều): tạo nhiều cột theo số cặp key/value trong object
+
         defaults: {
           ...body,
           id: generateId(),
-          // image:  fileData?.path,
-          image: `http://localhost:${process.env.PORT}/${fileData?.filename}`,
-          // filename: fileData
+          image: fileData.path,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         },
       });
 
+      if (response[1]) {
+        await db.Book.update(
+          { createdAt: new Date() }, // Cập nhật createdAt để đảm bảo luôn mới nhất
+          { where: { id: response[0].id } }
+        );
+      }
+
       resolve({
-        error: response[1] ? 0 : 1, //true: 0 false: 1
+        error: response[1] ? 0 : 2, //true: 0 false: 1
         message: response[1] ? 'Created' : 'Cannot create new book',
       });
     } catch (error) {
@@ -101,65 +98,42 @@ export const createNewBook = (body, fileData) =>
 export const updateBook = ({ bid, ...body }, fileData) =>
   new Promise(async (resolve, reject) => {
     try {
-      // if (fileData) body.image = fileData?.path;
-      if (fileData) body.image = `http://localhost:${process.env.PORT}/${fileData?.filename}`;
+      const existingBook = await db.Book.findOne({ where: { id: bid } });
+
+      const isSameData =
+        existingBook.title === body.title &&
+        existingBook.price === Number(body.price) &&
+        existingBook.description === body.description &&
+        existingBook.category_code === body.category_code &&
+        existingBook.available === Number(body.available) &&
+        !fileData;
+
+      if (isSameData) {
+        return resolve({ error: 1, message: 'Không có gì thay đổi' });
+      }
+      if (fileData) body.image = fileData.path;
       const response = await db.Book.update(body, {
         where: { id: bid },
       });
       resolve({
-        error: response[0] > 0 ? 0 : 1, //true: 0 false: 1
+        error: response[0] > 0 ? 0 : 2, //true: 0 false: 1
         message: response[0] ? `${response[0]} updated` : 'Cannot update',
       });
-      // if (fileData && !response[0] === 0) cloudinary.uploader.destroy(fileData.filename);
     } catch (error) {
       reject(error);
-      // if (fileData) cloudinary.uploader.destroy(fileData.filename);
     }
   });
 
-//DELETE
-//bids có s vì dữ liệu truyền vào là một mảng, trong trường hợp muốn xóa nhiều sách một lúc
-//[id1, id2]
-
-/*
-params = {
-  bids = [id1, id2],
-  filename = [filename1, filename2]
-}
-*/
-// export const deleteBook = (bids, filename) =>
-//   new Promise(async (resolve, reject) => {
-//     try {
-//       const response = await db.Book.destroy({
-//         where: { id: bids },
-//       });
-//       resolve({
-//         error: response > 0 ? 0 : 1, //true: 0 false: 1
-//         message: `${response} book(s) deleted`,
-//       });
-//       //cloudinary.uploader.destroy chỉ xóa được một element
-//       //muốn xóa nhiều element cần dùng cloudinary.api.delete_resources(mảng các element)
-//       if (filename) cloudinary.api.delete_resources(filename);
-//     } catch (error) {
-//       reject(error);
-//     }
-//   });
-
-//Delete khi ảnh lưu trực tiếp trên db
-
-export const deleteBook = (bids) =>
+export const deleteBook = (bid) =>
   new Promise(async (resolve, reject) => {
     try {
       const response = await db.Book.destroy({
-        where: { id: bids },
+        where: { id: bid },
       });
       resolve({
-        error: response > 0 ? 0 : 1, //true: 0 false: 1
+        error: response > 0 ? 0 : 2, //true: 0 false: 1
         message: `${response} book(s) deleted`,
       });
-      //cloudinary.uploader.destroy chỉ xóa được một element
-      //muốn xóa nhiều element cần dùng cloudinary.api.delete_resources(mảng các element)
-      // if (filename) cloudinary.api.delete_resources(filename);
     } catch (error) {
       reject(error);
     }

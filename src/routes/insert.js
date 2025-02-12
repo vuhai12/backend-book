@@ -2,10 +2,8 @@
 import * as controllers from '../controllers';
 import express from 'express';
 
+const router = express.Router();
 
-const router = express.Router()
+router.get('/', controllers.insertData);
 
-
-router.get('/',controllers.insertData)
-
-export default router
+export default router;

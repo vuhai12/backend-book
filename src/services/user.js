@@ -28,6 +28,39 @@ export const getCurrent = (userID) =>
     }
   });
 
+export const updateCurrent = (body, fileData, id) =>
+  new Promise(async (resolve, reject) => {
+    try {
+      if (fileData) {
+        body.avatar = fileData.path;
+      } else {
+        delete body.avatar;
+      }
+
+      const existingUser = await db.User.findOne({ where: { id } });
+      const isSameData = existingUser.name === body.name && existingUser.email === body.email && existingUser.address === body.address && !fileData;
+      if (body.email && body.email !== existingUser.email) {
+        const emailExists = await db.User.findOne({ where: { email: body.email } });
+        if (emailExists) {
+          return resolve({ error: 1, message: 'Email đã tồn tại' });
+        }
+      }
+      if (isSameData) {
+        return resolve({ error: 2, message: 'Không có gì thay đổi' });
+      }
+      const response = await db.User.update(body, {
+        where: { id },
+      });
+
+      resolve({
+        error: response[0] > 0 ? 0 : 2, //true: 0 false: 1
+        message: response[0] ? `${response[0]} updated success` : 'Cannot update',
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+
 export const getAllUsers = ({ page, limit, order, name, ...query }) =>
   new Promise(async (resolve, reject) => {
     try {
@@ -41,12 +74,13 @@ export const getAllUsers = ({ page, limit, order, name, ...query }) =>
 
       const response = await db.User.findAndCountAll({
         where: query,
+        order: [['createdAt', 'DESC']],
         ...queries, //sử dụng destructuring rải các thuộc tính của queries ra
         include: [{ model: db.Role, as: 'roleData', attributes: ['id', 'code', 'value'] }],
       });
 
       resolve({
-        error: response ? 0 : 1,
+        error: response ? 0 : 2,
         message: response ? 'Got' : 'Cannot found',
         userData: response,
       });
@@ -58,6 +92,11 @@ export const getAllUsers = ({ page, limit, order, name, ...query }) =>
 export const createNewUser = (body, fileData) =>
   new Promise(async (resolve, reject) => {
     try {
+      if (fileData) {
+        body.avatar = fileData.path;
+      } else {
+        delete body.avatar;
+      }
       const response = await db.User.findOrCreate({
         where: { email: body?.email },
 
@@ -65,13 +104,20 @@ export const createNewUser = (body, fileData) =>
           ...body,
           id: generateId(),
           password: hashPassword(body?.password),
-          avatar: `${process.env.BASE_URL}/uploads/${fileData?.filename}`,
         },
       });
 
+      if (response[1]) {
+        // Nếu tạo mới thành công, cập nhật danh sách sách để sách mới lên đầu
+        await db.User.update(
+          { createdAt: new Date() }, // Cập nhật createdAt để đảm bảo luôn mới nhất
+          { where: { id: response[0].id } }
+        );
+      }
+
       resolve({
         error: response[1] ? 0 : 1, //true: 0 false: 1
-        message: response[1] ? 'Created' : 'Cannot create new user',
+        message: response[1] ? 'Created' : 'Email đã tồn tại',
       });
     } catch (error) {
       reject(error);
@@ -81,8 +127,20 @@ export const createNewUser = (body, fileData) =>
 export const updateUser = (body, fileData, id) =>
   new Promise(async (resolve, reject) => {
     try {
+      const existingUser = await db.User.findOne({ where: { id } });
+      const isSameData = existingUser.name === body.name && existingUser.email === body.email && existingUser.address === body.address && !fileData;
+      if (body.email && body.email !== existingUser.email) {
+        const emailExists = await db.User.findOne({ where: { email: body.email } });
+        if (emailExists) {
+          return resolve({ error: 1, message: 'Email đã tồn tại' });
+        }
+      }
+      if (isSameData) {
+        return resolve({ error: 2, message: 'Không có gì thay đổi' });
+      }
+
       if (fileData) {
-        body.avatar = `${process.env.BASE_URL}/uploads/${fileData?.filename}`;
+        body.avatar = fileData.path;
       } else {
         delete body.avatar;
       }
@@ -97,7 +155,7 @@ export const updateUser = (body, fileData, id) =>
       });
 
       resolve({
-        error: response[0] > 0 ? 0 : 1, //true: 0 false: 1
+        error: response[0] > 0 ? 0 : 2, //true: 0 false: 1
         message: response[0] ? `${response[0]} updated` : 'Cannot update',
       });
     } catch (error) {
@@ -112,7 +170,7 @@ export const deleteUser = (id) =>
         where: { id },
       });
       resolve({
-        error: response > 0 ? 0 : 1, //true: 0 false: 1
+        error: response > 0 ? 0 : 2, //true: 0 false: 1
         message: `${response} User(s) deleted`,
       });
     } catch (error) {

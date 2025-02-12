@@ -8,12 +8,13 @@ const router = express.Router();
 
 router.use(verifyToken);
 
-router.get('/account', controllers.getCurrent);
+router.get('/me', controllers.getCurrent);
+router.put('/me', uploadCloud.single('avatar'), controllers.updateCurrent);
 router.get('/', controllers.getAllUsers);
 router.post('/', uploadCloud.single('avatar'), controllers.createNewUser);
 
 router.put('/', uploadCloud.single('avatar'), controllers.updateUser);
 
-router.delete('/', controllers.deleteUser);
+router.delete('/:id', controllers.deleteUser);
 
 module.exports = router;
