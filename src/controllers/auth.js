@@ -49,3 +49,26 @@ export const refreshTokenController = async (req, res) => {
     return internalServerError(res);
   }
 };
+
+export const requestPasswordReset = async (req, res) => {
+  try {
+    const { email } = req.body;
+    console.log('emailsssssssssss', email);
+    const response = await services.requestPasswordReset({ email });
+    return res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
+    return internalServerError(res);
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+    const response = await services.resetPassword({ token, newPassword });
+    return res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
+    return internalServerError(res);
+  }
+};

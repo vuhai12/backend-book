@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.belongsTo(models.Role, { foreignKey: 'role_code', targetKey: 'code', as: 'roleData' });
       User.belongsToMany(models.Book, { through: 'BookUsers', foreignKey: 'userBookId' });
+      User.hasMany(models.Comment, { foreignKey: 'userId' });
+      User.hasMany(models.Like, { foreignKey: 'userId' });
+      User.hasMany(models.Message, { foreignKey: 'senderId', as: 'sentMessages' });
+      User.hasMany(models.Message, { foreignKey: 'receiverId', as: 'receivedMessages' });
     }
   }
   User.init(

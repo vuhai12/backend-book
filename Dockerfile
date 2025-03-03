@@ -1,50 +1,9 @@
-# Sử dụng node làm base image
-FROM node:18
+FROM node:20
 
-# Đặt thư mục làm việc
 WORKDIR /app
-
-# Copy file package.json và package-lock.json để cài đặt dependency trước
 COPY package.json package-lock.json ./
-
-# Cài đặt dependency
 RUN npm install
-
-# Copy toàn bộ mã nguồn vào container
 COPY . .
 
-# Thiết lập biến môi trường
-ARG JWT_SECRET
-ARG JWT_SECRET_REFRESH_TOKEN
-ARG CLIENT_URL
-ARG PORT
-ARG BASE_URL
-ARG DB_HOST
-ARG DB_DIALECT
-ARG DB_PORT
-ARG DB_NAME
-ARG DB_USERNAME
-ARG DB_PASSWORD
-ARG LIMIT_BOOK
-ARG LIMIT_USER
-ARG NODE_ENV
-ENV JWT_SECRET=${JWT_SECRET}
-ENV JWT_SECRET_REFRESH_TOKEN=${JWT_SECRET_REFRESH_TOKEN}
-ENV CLIENT_URL=${CLIENT_URL}
-ENV PORT=${PORT}
-ENV BASE_URL=${BASE_URL}
-ENV DB_HOST=${DB_HOST}
-ENV DB_DIALECT=${DB_DIALECT}
-ENV DB_PORT=${DB_PORT}
-ENV DB_NAME=${DB_NAME}
-ENV DB_USERNAME=${DB_USERNAME}
-ENV DB_PASSWORD=${DB_PASSWORD}
-ENV LIMIT_BOOK=${LIMIT_BOOK}
-ENV LIMIT_USER=${LIMIT_USER}
-ENV NODE_ENV=${NODE_ENV}
-
-# Mở cổng
 EXPOSE 5000
-
-# Chạy ứng dụng
-CMD ["npm", "start"]
+CMD ["node", "index.js"]

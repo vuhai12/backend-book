@@ -5,3 +5,7 @@ export * from './book';
 export * from './category';
 export * from './cart';
 export * from './order';
+export * from './comment';
+export * from './like';
+export * from './message';
+export * from './payment';
