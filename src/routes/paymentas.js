@@ -7,7 +7,6 @@ const moment = require('moment');
 require('dotenv').config();
 
 router.post('/create_payment_url', function (req, res, next) {
-  console.log('99999999');
   process.env.TZ = 'Asia/Ho_Chi_Minh';
 
   let date = new Date();
@@ -54,7 +53,6 @@ router.post('/create_payment_url', function (req, res, next) {
   let signed = hmac.update(Buffer.from(signData, 'utf-8')).digest('hex');
   vnp_Params['vnp_SecureHash'] = signed;
   vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
-  console.log('vnpUrl', vnpUrl);
   //   res.redirect(vnpUrl);
 });
 

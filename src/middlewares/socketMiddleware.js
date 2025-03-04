@@ -15,7 +15,6 @@ export const socketMiddleware = (io) => {
     if (!token) return;
     const extractedToken = token?.startsWith('Bearer ') ? token.split(' ')[1] : token;
     jwt.verify(extractedToken, process.env.JWT_SECRET, (err, decoded) => {
-      console.log('decoded', decoded);
       if (err) return next(new Error('Invalid token'));
       socket.userId = decoded.id; // Gán userId vào socket
       next();

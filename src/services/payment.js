@@ -47,7 +47,6 @@ export const createPayment = ({ amount, bankCode, ipAddr }) =>
       let signed = hmac.update(Buffer.from(signData, 'utf-8')).digest('hex');
       vnp_Params['vnp_SecureHash'] = signed;
       vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
-      console.log('vnpUrl', vnpUrl);
       resolve({ error: 0, message: 'Tạo đơn hàng thành công', paymentUrl: vnpUrl });
     } catch (error) {
       reject(error);

@@ -183,8 +183,6 @@ export const resetPassword = ({ token, newPassword }) =>
   new Promise(async (resolve, reject) => {
     try {
       // 🕵️‍♂️ Kiểm tra token hợp lệ
-      console.log('token', token);
-      console.log('newPassword', newPassword);
       const resetEntry = await db.PasswordReset.findOne({ where: { token } });
       if (!resetEntry) {
         resolve({
@@ -192,7 +190,6 @@ export const resetPassword = ({ token, newPassword }) =>
           message: 'Token không hợp lệ',
         });
       }
-      console.log('resetEntry', resetEntry);
       if (new Date() > resetEntry.expiresAt) {
         resolve({
           error: 1,

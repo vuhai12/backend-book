@@ -29,7 +29,6 @@ export const sendMessageToAmin = (senderId, receiverId, message) =>
 export const getListConversationsUserChatWithAdmin = (id) =>
   new Promise(async (resolve, reject) => {
     try {
-      console.log('id', id);
       const response = await db.Message.findAll({
         where: {
           [Op.or]: [{ senderId: id }, { receiverId: id }],

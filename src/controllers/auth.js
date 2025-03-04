@@ -53,7 +53,6 @@ export const refreshTokenController = async (req, res) => {
 export const requestPasswordReset = async (req, res) => {
   try {
     const { email } = req.body;
-    console.log('emailsssssssssss', email);
     const response = await services.requestPasswordReset({ email });
     return res.status(200).json(response);
   } catch (error) {
