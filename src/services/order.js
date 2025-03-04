@@ -19,7 +19,7 @@ export const createOrder = (body, id) =>
           paymentMethod: body.methodPayment,
           status: 'Active',
           isDelivered: false,
-          isPaid: false,
+          isPaid: body.isPaid,
           orderUserId: id,
         });
 
