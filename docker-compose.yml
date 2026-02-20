@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:3306"
+
+  app:
+    build: .
+    container_name: backend-app
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app # 👈 mount source code thật vào container
+      - /app/node_modules # 👈 tránh ghi đè node_modules
+    command: sh -c "sleep 15 && npm run dev"
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_USERNAME: root
+      DB_PASSWORD: 123456
+      DB_NAME: mydb
+      DB_PORT: 3306

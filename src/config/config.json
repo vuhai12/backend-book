@@ -1,26 +1,28 @@
 {
   "development": {
-    "username": "postgres.wtdncfbzojhuhmapccpy",
-    "password": "buy-book-123456789A@",
-    "database": "postgres",
-    "host": "aws-0-ap-southeast-1.pooler.supabase.com",
-    "dialect": "postgres",
-    "port": 6543,
+    "username": "root",
+    "password": "123456",
+    "database": "mydb",
+    "host": "mysql",
+    "dialect": "mysql",
+    "port": 3306,
     "logging": false,
     "timezone": "+07:00"
   },
   "test": {
-    "username": "postgres.wtdncfbzojhuhmapccpy",
-    "password": "buy-book-123456789A@",
-    "database": "postgres",
-    "host": "aws-0-ap-southeast-1.pooler.supabase.com",
-    "dialect": "postgres"
+    "username": "root",
+    "password": "123456",
+    "database": "mydb",
+    "host": "mysql",
+    "dialect": "mysql",
+    "port": 3306
   },
   "production": {
-    "username": "postgres.wtdncfbzojhuhmapccpy",
-    "password": "buy-book-123456789A@",
-    "database": "postgres",
-    "host": "aws-0-ap-southeast-1.pooler.supabase.com",
-    "dialect": "postgres"
+    "username": "root",
+    "password": "123456",
+    "database": "mydb",
+    "host": "mysql",
+    "dialect": "mysql",
+    "port": 3306
   }
 }

@@ -1,4 +1,3 @@
-//dinh nghia cac api (crud) lien quan den user
 import * as controllers from '../controllers';
 import express from 'express';
 

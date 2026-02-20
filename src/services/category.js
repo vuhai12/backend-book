@@ -6,6 +6,7 @@ import db from '../models';
 export const getCategory = () =>
   new Promise(async (resolve, reject) => {
     try {
+      console.log('serxxxxxxxxxxx');
       const response = await db.Category.findAll();
       resolve({
         error: response ? 0 : 1,

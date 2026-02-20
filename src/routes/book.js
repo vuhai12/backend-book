@@ -4,8 +4,6 @@ import verifyToken from '../middlewares/verfy_token';
 import uploadCloud from '../middlewares/uploader';
 const router = express.Router();
 
-//public routes
-
 router.get('/:id', controllers.getBookById);
 router.get('/', controllers.getBooks);
 router.use(verifyToken);

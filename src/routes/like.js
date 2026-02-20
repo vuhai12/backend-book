@@ -6,5 +6,4 @@ const router = express.Router();
 router.use(verifyToken);
 
 router.post('/', controllers.toggleLike);
-// router.delete('/:idComment', controllers.deleteLike);
 module.exports = router;
